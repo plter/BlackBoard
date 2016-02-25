@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<StackPane fx:id="spBlackBoard"
+           VBox.vgrow="ALWAYS"
+           minHeight="400.0" minWidth="600.0"
+           xmlns="http://javafx.com/javafx/8"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.plter.blackboard.controllers.MainViewController">
+    <children>
+        <BorderPane>
+            <top>
+                <HBox fx:id="hbTop" prefHeight="27" BorderPane.alignment="CENTER">
+                    <ImageView fx:id="ivTopLeft"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <ImageView fx:id="ivTopRight"/>
+                </HBox>
+            </top>
+            <left>
+                <Pane fx:id="pnLeft" prefWidth="27" BorderPane.alignment="CENTER"/>
+            </left>
+            <center>
+                <Pane style="-fx-background-color: darkslategrey" fx:id="pnCenter" BorderPane.alignment="CENTER"/>
+            </center>
+            <right>
+                <Pane prefWidth="27" fx:id="pnRight" BorderPane.alignment="CENTER"/>
+            </right>
+            <bottom>
+                <HBox fx:id="hbBottom" prefHeight="27" BorderPane.alignment="CENTER">
+                    <ImageView fx:id="ivBottomLeft"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <ImageView fx:id="ivBottomRight"/>
+                </HBox>
+            </bottom>
+        </BorderPane>
+        <VBox style="-fx-padding: 27px">
+            <Pane fx:id="canvasContainer" VBox.vgrow="ALWAYS">
+                <Canvas fx:id="canvas" onMouseDragged="#canvasMouseDraggedHandler" onMousePressed="#canvasMousePressedHandler" onMouseReleased="#canvasMouseReleasedHandler"/>
+            </Pane>
+            <HBox style="-fx-spacing: 5px;-fx-alignment: center-right;-fx-padding: 5px">
+                <Label text="粉笔颜色" textFill="white"/>
+                <ColorPicker fx:id="cpChalkColor"/>
+                <Button text="清空黑板" onAction="#btnClearBlackBoardClickHandler"/>
+                <Button text="保存板书" onAction="#btnSaveBackBoardClickHandler"/>
+            </HBox>
+        </VBox>
+    </children>
+</StackPane>
