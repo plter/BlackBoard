@@ -43,6 +43,8 @@
                 <Canvas fx:id="canvas" onMouseDragged="#canvasMouseDraggedHandler" onMousePressed="#canvasMousePressedHandler" onMouseReleased="#canvasMouseReleasedHandler"/>
             </Pane>
             <HBox style="-fx-spacing: 5px;-fx-alignment: center-right;-fx-padding: 5px">
+                <Button text="粉笔" fx:id="btnChalk" onAction="#btnChalkClickedHandler"/>
+                <Button text="黑板擦" fx:id="btnEraser" onAction="#btnEraserClickedHandler"/>
                 <Label text="粉笔颜色" textFill="white"/>
                 <ColorPicker fx:id="cpChalkColor"/>
                 <Button text="清空黑板" onAction="#btnClearBlackBoardClickHandler"/>

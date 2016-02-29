@@ -1,28 +1,25 @@
 package com.plter.blackboard.controllers;
 
+import com.plter.blackboard.core.Pointer;
 import com.plter.blackboard.graphics.ChalkPathCommands;
 import com.plter.blackboard.graphics.ColorTool;
-import com.plter.blackboard.graphics.DrawCommand;
 import com.plter.blackboard.res.Images;
 import com.plter.blackboard.views.ViewLoader;
 import javafx.beans.value.ChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
@@ -47,8 +44,11 @@ public class MainViewController implements Initializable {
     public ColorPicker cpChalkColor;
     public Canvas canvas;
     public Pane canvasContainer;
+    public Button btnChalk;
+    public Button btnEraser;
     private GraphicsContext context2D;
     private ChalkPathCommands commands = new ChalkPathCommands();
+    private Pointer currentPointer = Pointer.Chalk;
 
     public static Scene createScene() {
         return new Scene(ViewLoader.loadView("MainView.fxml").getView(), 800, 500);
@@ -103,14 +103,29 @@ public class MainViewController implements Initializable {
 
     public void canvasMousePressedHandler(MouseEvent event) {
 
-        ChalkPathCommands cmds = new ChalkPathCommands();
+        //set init values
+        Color currentColorClone;
+        double currentLineWidth;
+        switch (currentPointer){
+            case Eraser:
+                currentColorClone = ColorTool.cloneColor(Color.DARKSLATEGREY);
+                currentLineWidth = 30;
+                break;
+            default:
+                currentColorClone = ColorTool.cloneColor(cpChalkColor.getValue());
+                currentLineWidth = 2;
+                break;
+        }
 
-        Color currentColor = ColorTool.cloneColor(cpChalkColor.getValue());
+
+
+        ChalkPathCommands cmds = new ChalkPathCommands();
 
         cmds.addCommand(() -> {
             context2D.beginPath();
-            context2D.setLineWidth(3);
-            context2D.setStroke(currentColor);
+            context2D.setLineWidth(currentLineWidth);
+            context2D.setLineCap(StrokeLineCap.ROUND);
+            context2D.setStroke(currentColorClone);
             context2D.moveTo(event.getX(), event.getY());
         });
 
@@ -165,4 +180,11 @@ public class MainViewController implements Initializable {
         }
     }
 
+    public void btnChalkClickedHandler(ActionEvent actionEvent) {
+        currentPointer = Pointer.Chalk;
+    }
+
+    public void btnEraserClickedHandler(ActionEvent actionEvent) {
+        currentPointer = Pointer.Eraser;
+    }
 }
